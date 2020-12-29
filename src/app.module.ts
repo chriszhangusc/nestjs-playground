@@ -6,11 +6,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import { TodosModule } from './todos/todos.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     TodosModule,
     CatsModule,
+    UsersModule,
     GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
     }),
