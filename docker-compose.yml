@@ -3,12 +3,11 @@ services:
   postgres:
     image: postgres:10.12
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgresdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=postgres_password
-      - POSTGRES_USER=postgres_user
+    env_file:
+      - .env
   mongodb_container:
     image: mongo:4.4
     # environment:
@@ -20,5 +19,5 @@ services:
       - mongodb_data_container:/data/db
 
 volumes:
-  postgres:
+  postgresdata:
   mongodb_data_container:
