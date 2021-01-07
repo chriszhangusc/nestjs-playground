@@ -2,14 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type CreateCatDto {
-  id: ID!
-  name: String!
-  age: Int!
-  breed: String!
+type Todo {
+  id: Int!
+  content: String!
+  isDeleted: Boolean!
+  user: [User!]!
+}
+
+type User {
+  id: Int!
+  username: String!
+  email: String!
+  todos: [Todo!]
 }
 
 type Query {
-  hello: String!
-  cats: [CreateCatDto!]!
+  todo(id: String!): Todo!
+  todos: [Todo!]!
+  user(id: String!): User!
+  users: [User!]!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+}
+
+input CreateUserInput {
+  username: String!
+  email: String!
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { CreateTodoDto } from './dtos/create-todo.dto';
 import { Todo } from './todo.entity';
@@ -9,6 +10,7 @@ export class TodosService {
   constructor(
     @InjectRepository(Todo)
     private todosRepository: Repository<Todo>,
+    private userService: UsersService,
   ) {}
 
   findAll(): Promise<Todo[]> {
@@ -20,7 +22,8 @@ export class TodosService {
   }
 
   async create(createTodoDto: CreateTodoDto) {
-    const newTodo = { content: createTodoDto.content } as Todo;
+    const user = await this.userService.findOne(String(createTodoDto.userId));
+    const newTodo = { content: createTodoDto.content, user } as Todo;
     return this.todosRepository.create(newTodo);
   }
 

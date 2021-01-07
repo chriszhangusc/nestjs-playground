@@ -2,16 +2,12 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CatsModule } from './cats/cats.module';
 import { TodosModule } from './todos/todos.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     TodosModule,
-    CatsModule,
     UsersModule,
     GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
@@ -26,7 +22,5 @@ import { UsersModule } from './users/users.module';
     }),
     MongooseModule.forRoot('mongodb://localhost:27017/nestjs'),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

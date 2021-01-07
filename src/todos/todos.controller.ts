@@ -12,7 +12,9 @@ export class TodosController {
   }
 
   @Post()
+  // FIXME
   createTodo(@Body() createTodoDto: CreateTodoDto): Promise<CreateTodoDto> {
-    return this.todosService.create(createTodoDto);
+    // return this.todosService.create(createTodoDto);
+    return null;
   }
 }
