@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { TodosModule } from './todos/todos.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TodosModule,
     UsersModule,
     GraphQLModule.forRoot({
@@ -14,13 +15,14 @@ import { UsersModule } from './users/users.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      port: 5432,
-      username: 'postgres_user',
-      password: 'postgres_password',
-      database: 'nestjsdb',
+      port: Number(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      host: process.env.POSTGRES_HOST,
       entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/nestjs'),
   ],
 })
 export class AppModule {}

@@ -6,7 +6,7 @@ type Todo {
   id: Int!
   content: String!
   isDeleted: Boolean!
-  user: [User!]!
+  user: User!
 }
 
 type User {
@@ -24,7 +24,13 @@ type Query {
 }
 
 type Mutation {
+  createTodo(createTodoInput: CreateTodoInput!): Todo!
   createUser(createUserInput: CreateUserInput!): User!
+}
+
+input CreateTodoInput {
+  content: String!
+  userId: String!
 }
 
 input CreateUserInput {

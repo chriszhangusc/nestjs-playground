@@ -1,5 +1,6 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Todo } from './todo.entity';
+import { CreateTodoInput } from './todos.input';
 import { TodosService } from './todos.service';
 
 @Resolver((of) => Todo)
@@ -16,9 +17,8 @@ export class TodosResolver {
     return this.todosService.findAll();
   }
 
-  // @ResolveField()
-  // async posts(@Parent() author: Author) {
-  //   const { id } = author;
-  //   return this.postsService.findAll({ authorId: id });
-  // }
+  @Mutation(() => Todo)
+  async createTodo(@Args('createTodoInput') todoInput: CreateTodoInput) {
+    return this.todosService.create(todoInput);
+  }
 }

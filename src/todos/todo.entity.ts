@@ -23,7 +23,7 @@ export class Todo {
   @Field()
   isDeleted: boolean;
 
-  @Field(() => [User])
+  @Field(() => User)
   @ManyToOne(() => User, (user) => user.todos)
   @JoinColumn()
   user: User;
