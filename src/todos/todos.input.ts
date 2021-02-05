@@ -6,5 +6,5 @@ export class CreateTodoInput implements Partial<Todo> {
   @Field()
   content: string;
   @Field()
-  userId: string;
+  userId: number;
 }

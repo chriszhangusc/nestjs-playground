@@ -22,6 +22,7 @@ import { UsersModule } from './users/users.module';
       host: process.env.POSTGRES_HOST,
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
+      logging: true,
     }),
   ],
 })

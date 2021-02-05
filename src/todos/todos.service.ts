@@ -13,18 +13,24 @@ export class TodosService {
     private userService: UsersService,
   ) {}
 
-  findAll(): Promise<Todo[]> {
-    return this.todosRepository.find();
+  async findAll(): Promise<Todo[]> {
+    const todos = await this.todosRepository.find();
+    return todos;
   }
 
-  findOne(id: string): Promise<Todo> {
-    return this.todosRepository.findOne(id);
+  async findOne(id: string): Promise<Todo> {
+    const todo = this.todosRepository.findOne(id);
+    return todo;
   }
 
   async create(newTodoInput: CreateTodoInput) {
     const user = await this.userService.findOne(String(newTodoInput.userId));
     const newTodo = { content: newTodoInput.content, user } as Todo;
     return await this.todosRepository.save(newTodo);
+  }
+
+  async getTodosByUserId(userId: string) {
+    return this.todosRepository.find({ where: { userId } });
   }
 
   async remove(id: string): Promise<void> {

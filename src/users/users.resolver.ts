@@ -8,14 +8,21 @@ export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
   @Query((returns) => User, { name: 'user' })
-  async getUser(@Args('id', { type: () => String }) id: string) {
+  async user(@Args('id', { type: () => String }) id: string) {
     return this.usersService.findOne(id);
   }
 
   @Query((returns) => [User], { name: 'users' })
-  async getUsers() {
+  async users() {
     return this.usersService.findAll();
   }
+
+  // @ResolveField()
+  // async todos(@Parent() user: User) {
+  //   // Which one?
+  //   return this.todosService.getTodosByUserId(`${user.id}`);
+  //   // return this.usersService.getTodosByUserId(user.id);
+  // }
 
   @Mutation(() => User)
   async createUser(@Args('createUserInput') userInput: CreateUserInput) {

@@ -26,5 +26,8 @@ export class Todo {
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.todos)
   @JoinColumn()
-  user: User;
+  user?: User;
+
+  @Column()
+  userId: number;
 }
