@@ -7,12 +7,12 @@ import { UsersService } from './users.service';
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
-  @Query((returns) => User, { name: 'user' })
+  @Query((returns) => User)
   async user(@Args('id', { type: () => String }) id: string) {
     return this.usersService.findOne(id);
   }
 
-  @Query((returns) => [User], { name: 'users' })
+  @Query((returns) => [User])
   async users() {
     return this.usersService.findAll();
   }
@@ -35,3 +35,6 @@ export class UsersResolver {
   //   return this.postsService.findAll({ authorId: id });
   // }
 }
+
+// 1. Call dataloader in the resolver layer and have dataloader calls service getAllByIds
+// 2. Put dataloader in between the service layer and repository layer downside is that we have to scope service object to every request

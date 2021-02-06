@@ -1,15 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Injectable, Scope } from '@nestjs/common';
 import { User } from './user.entity';
 import { CreateUserInput } from './user.input';
+import { UsersRepository } from './users.repository';
+import { BaseService } from '../shared/base.service';
 
-@Injectable()
-export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-  ) {}
+@Injectable({ scope: Scope.REQUEST })
+export class UsersService extends BaseService<User> {
+  constructor(private usersRepository: UsersRepository) {
+    super(usersRepository);
+  }
 
   async create(createUserDto: CreateUserInput): Promise<User> {
     const user = {
@@ -18,15 +17,19 @@ export class UsersService {
       todos: [],
     };
 
-    return await this.usersRepository.save(user);
+    return this.usersRepository.save(user);
   }
 
   findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  findOne(id: string): Promise<User> {
-    return this.usersRepository.findOne(id);
+  async findOne(id: string): Promise<User> {
+    // Create a loader and then load
+    // new UsersLoader().generateLoader();
+    // return this.usersRepository.getUserById(Number(id));
+    // return this.userLoader.load(Number(id));
+    return this.loader.load(Number(id));
   }
 
   async remove(id: string): Promise<void> {
