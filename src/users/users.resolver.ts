@@ -6,7 +6,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { TodosService } from 'src/todos/todos.service';
+import { TodosLoader } from 'src/todos/todos.loader';
 import { User } from './user.entity';
 import { CreateUserInput } from './user.input';
 import { UsersService } from './users.service';
@@ -15,7 +15,7 @@ import { UsersService } from './users.service';
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
-    private todosService: TodosService,
+    private todosLoader: TodosLoader,
   ) {}
 
   @Query((returns) => User)
@@ -30,7 +30,7 @@ export class UsersResolver {
 
   @ResolveField()
   async todos(@Parent() user: User) {
-    return this.todosService.getTodosByUserId(`${user.id}`);
+    return this.todosLoader.todosByUserIdsLoader.load(`${user.id}`);
   }
 
   @Mutation(() => User)

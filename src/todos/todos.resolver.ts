@@ -7,7 +7,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { UsersService } from 'src/users/users.service';
+import { UsersLoader } from 'src/users/users.loader';
 import { Todo } from './todo.entity';
 import { CreateTodoInput } from './todos.input';
 import { TodosService } from './todos.service';
@@ -16,7 +16,7 @@ import { TodosService } from './todos.service';
 export class TodosResolver {
   constructor(
     private todosService: TodosService,
-    private usersService: UsersService,
+    private usersLoader: UsersLoader,
   ) {}
 
   @Query((returns) => Todo)
@@ -30,14 +30,8 @@ export class TodosResolver {
   }
 
   @ResolveField()
-  async user(@Parent() todo: Todo, @Context() ctx) {
-    return this.usersService.findOne(`${todo.userId}`);
-
-    // dataloader
-    // return this.usersLoader.loader.load(todo.userId);
-
-    // From context it works but doesn't seem right because it's not per request
-    // return ctx.userLoader.load(todo.userId);
+  async user(@Parent() todo: Todo) {
+    return this.usersLoader.userByIdLoader.load(todo.userId);
   }
 
   @Mutation(() => Todo)

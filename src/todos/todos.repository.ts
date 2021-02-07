@@ -4,7 +4,7 @@ import { Todo } from './todo.entity';
 
 @EntityRepository(Todo)
 export class TodosRepository extends Repository<Todo> {
-  async getTodosByUserIds(userIds: number[]) {
+  async getTodosByUserIds(userIds: string[]) {
     const todos = await this.createQueryBuilder()
       .where({
         userId: In(userIds),
