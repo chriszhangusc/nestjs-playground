@@ -1,11 +1,11 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { UsersService } from 'src/users/users.service';
 import { Todo } from './todo.entity';
 import { CreateTodoInput } from './todos.input';
 import { TodosRepository } from './todos.repository';
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class TodosService {
   private readonly usersTodosLoader;
 
@@ -34,6 +34,10 @@ export class TodosService {
 
   async getTodosByUserId(userId: string) {
     return this.usersTodosLoader.load(userId);
+  }
+
+  async getTodosByUserIds(userIds: string[]) {
+    return this.todosRepository.getTodosByUserIds(userIds);
   }
 
   async remove(id: string): Promise<void> {
