@@ -19,19 +19,17 @@ export class TodosService {
   }
 
   async findAll(): Promise<Todo[]> {
-    const todos = await this.todosRepository.find();
-    return todos;
+    return this.todosRepository.find();
   }
 
   async findOne(id: string): Promise<Todo> {
-    const todo = this.todosRepository.findOne(id);
-    return todo;
+    return this.todosRepository.findOne(id);
   }
 
   async create(newTodoInput: CreateTodoInput) {
     const user = await this.userService.findOne(String(newTodoInput.userId));
     const newTodo = { content: newTodoInput.content, user } as Todo;
-    return await this.todosRepository.save(newTodo);
+    return this.todosRepository.save(newTodo);
   }
 
   async getTodosByUserId(userId: string) {
