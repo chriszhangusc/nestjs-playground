@@ -2,13 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { CreateUserInput } from './user.input';
 import { UsersRepository } from './users.repository';
-import { BaseService } from '../shared/base.service';
 
 @Injectable()
-export class UsersService extends BaseService<User> {
-  constructor(private usersRepository: UsersRepository) {
-    super(usersRepository);
-  }
+export class UsersService {
+  constructor(private usersRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserInput): Promise<User> {
     const user = {
@@ -29,7 +26,6 @@ export class UsersService extends BaseService<User> {
   }
 
   async findOne(id: string): Promise<User> {
-    // Create a loader and then load
     return this.usersRepository.getUserById(Number(id));
   }
 
