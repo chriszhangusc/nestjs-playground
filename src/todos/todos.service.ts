@@ -1,11 +1,11 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { UsersService } from 'src/users/users.service';
 import { Todo } from './todo.entity';
 import { CreateTodoInput } from './todos.input';
 import { TodosRepository } from './todos.repository';
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class TodosService {
   private readonly usersTodosLoader;
 
@@ -19,23 +19,25 @@ export class TodosService {
   }
 
   async findAll(): Promise<Todo[]> {
-    const todos = await this.todosRepository.find();
-    return todos;
+    return this.todosRepository.find();
   }
 
   async findOne(id: string): Promise<Todo> {
-    const todo = this.todosRepository.findOne(id);
-    return todo;
+    return this.todosRepository.findOne(id);
   }
 
   async create(newTodoInput: CreateTodoInput) {
     const user = await this.userService.findOne(String(newTodoInput.userId));
     const newTodo = { content: newTodoInput.content, user } as Todo;
-    return await this.todosRepository.save(newTodo);
+    return this.todosRepository.save(newTodo);
   }
 
   async getTodosByUserId(userId: string) {
     return this.usersTodosLoader.load(userId);
+  }
+
+  async getTodosByUserIds(userIds: string[]) {
+    return this.todosRepository.getTodosByUserIds(userIds);
   }
 
   async remove(id: string): Promise<void> {

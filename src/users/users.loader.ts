@@ -1,9 +1,16 @@
+import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
+import { UsersService } from './users.service';
 
-export class BaseService {
-  public readonly loader;
+@Injectable({ scope: Scope.REQUEST })
+export class UsersLoader {
+  public readonly userByIdLoader;
+  // Other user related loaders...
+  // public readonly otherUserLoader
 
-  constructor(repository: any) {
-    this.loader = new DataLoader((ids: number[]) => repository.findByIds(ids));
+  constructor(private readonly usersService: UsersService) {
+    this.userByIdLoader = new DataLoader((userIds: string[]) =>
+      usersService.getUsersByIds(userIds),
+    );
   }
 }
