@@ -7,7 +7,6 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-// import { UsersLoader } from 'src/users/users.loader';
 import { UsersService } from 'src/users/users.service';
 import { Todo } from './todo.entity';
 import { CreateTodoInput } from './todos.input';

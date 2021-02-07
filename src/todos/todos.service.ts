@@ -1,17 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Scope } from '@nestjs/common';
+import * as DataLoader from 'dataloader';
 import { UsersService } from 'src/users/users.service';
-import { Repository } from 'typeorm';
 import { Todo } from './todo.entity';
 import { CreateTodoInput } from './todos.input';
+import { TodosRepository } from './todos.repository';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class TodosService {
+  private readonly usersTodosLoader;
+
   constructor(
-    @InjectRepository(Todo)
-    private todosRepository: Repository<Todo>,
+    private todosRepository: TodosRepository,
     private userService: UsersService,
-  ) {}
+  ) {
+    this.usersTodosLoader = new DataLoader((userIds: any[]) =>
+      todosRepository.getTodosByUserIds(userIds),
+    );
+  }
 
   async findAll(): Promise<Todo[]> {
     const todos = await this.todosRepository.find();
@@ -30,7 +35,7 @@ export class TodosService {
   }
 
   async getTodosByUserId(userId: string) {
-    return this.todosRepository.find({ where: { userId } });
+    return this.usersTodosLoader.load(userId);
   }
 
   async remove(id: string): Promise<void> {
