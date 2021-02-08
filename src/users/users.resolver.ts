@@ -38,6 +38,3 @@ export class UsersResolver {
     return this.usersService.create(userInput);
   }
 }
-
-// 1. Call dataloader in the resolver layer and have dataloader calls service getAllByIds
-// 2. Put dataloader in between the service layer and repository layer downside is that we have to scope service object to every request
